@@ -1,11 +1,6 @@
-# OpenVPN for Docker
+# OpenVPN for Docker - Raspberry PI
 
-OpenVPN server in a Docker container complete with an EasyRSA PKI CA.
-
-#### Upstream Links
-
-* Docker Registry @ [kylemanna/openvpn](https://hub.docker.com/r/kylemanna/openvpn/)
-* GitHub @ [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn)
+OpenVPN server in a Docker container on RPI complete with an EasyRSA PKI CA.
 
 ## Quick Start
 
@@ -21,29 +16,40 @@ OpenVPN server in a Docker container complete with an EasyRSA PKI CA.
   private key used by the newly generated certificate authority.
 
       docker volume create --name $OVPN_DATA
-      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
-      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it kylemanna/openvpn ovpn_initpki
+      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm hferreira/rpi-docker-openvpn:latest ovpn_genconfig -u udp://VPN.SERVERNAME.COM
+      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it hferreira/rpi-docker-openvpn:latest ovpn_initpki
 
 * Start OpenVPN server process
-
-      docker run -v $OVPN_DATA:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+      docker run -v $OVPN_DATA:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN hferreira/rpi-docker-openvpn:latest
 
 * Generate a client certificate without a passphrase
 
-      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it kylemanna/openvpn easyrsa build-client-full CLIENTNAME nopass
+      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it hferreira/rpi-docker-openvpn:latest easyrsa build-client-full CLIENTNAME nopass
 
 * Retrieve the client configuration with embedded certificates
 
-      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
+      docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm hferreira/rpi-docker-openvpn:latest ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
 
-## Next Steps
+## Next Steps - Recommend Setup
 
-### More Reading
+### Setup your own DNS Servers
 
-Miscellaneous write-ups for advanced configurations are available in the
-[docs](docs) folder.
+* Adding your own DNS servers to openvpn config (if skipped - Google DNS servers are used instead)
 
-### Systemd Init Scripts
+      docker run -v $OVPN_DATA:/etc/openvpn --rm hferreira/rpi-docker-openvpn ovpn_genconfig -n <dns.server.ip1>
+
+(if multiple ones are required just run again)
+
+      docker run -v $OVPN_DATA:/etc/openvpn --rm hferreira/rpi-docker-openvpn ovpn_genconfig -n <dns.server.ip2>
+      
+### Setup OTP authentication with Google Authenticator
+
+It's possible (and recommended) to use Google Authenticator App to authenticate thus avoid the need
+to memorize passswords
+
+Please refer to the [otp documentation](docs/otp.md) to learn more.
+
+### Manage the container with Systemd Init Scripts
 
 A `systemd` init script is available to manage the OpenVPN container.  It will
 start the container on system boot, restart the container if it exits
@@ -55,11 +61,16 @@ Please refer to the [systemd documentation](docs/systemd.md) to learn more.
 
 If you prefer to use `docker-compose` please refer to the [documentation](docs/docker-compose.md).
 
+### More Reading
+
+Miscellaneous write-ups for advanced configurations are available in the
+[docs](docs) folder.
+
 ## Debugging Tips
 
 * Create an environment variable with the name DEBUG and value of 1 to enable debug output (using "docker -e").
 
-        docker run -v $OVPN_DATA:/etc/openvpn -p 1194:1194/udp --privileged -e DEBUG=1 kylemanna/openvpn
+        docker run -v $OVPN_DATA:/etc/openvpn -p 1194:1194/udp --privileged -e DEBUG=1 hferreira/rpi-docker-openvpn:latest
 
 * Test using a client that has openvpn installed correctly
 
@@ -185,16 +196,12 @@ of a guarantee in the future.
   volume for re-use across containers
 * Addition of tls-auth for HMAC security
 
-## Originally Tested On
+## Credits
 
-* Docker hosts:
-  * server a [Digital Ocean](https://www.digitalocean.com/?refcode=d19f7fe88c94) Droplet with 512 MB RAM running Ubuntu 14.04
-* Clients
-  * Android App OpenVPN Connect 1.1.14 (built 56)
-     * OpenVPN core 3.0 android armv7a thumb2 32-bit
-  * OS X Mavericks with Tunnelblick 3.4beta26 (build 3828) using openvpn-2.3.4
-  * ArchLinux OpenVPN pkg 2.3.4-1
+This is all Kyle Manna work. I just adapted it to RPI. He (and his awesome container for x86 arch) can be found here:
 
+* Docker Registry @ [kylemanna/openvpn](https://hub.docker.com/r/kylemanna/openvpn/)
+* GitHub @ [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn)
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fkylemanna%2Fdocker-openvpn.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fkylemanna%2Fdocker-openvpn?ref=badge_large)
