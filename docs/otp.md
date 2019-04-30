@@ -13,17 +13,21 @@ In order to enable two factor authentication the following steps are required.
 
 * Choose a more secure [cipher](https://community.openvpn.net/openvpn/wiki/SWEET32) to use because since [OpenVPN 2.3.13](https://community.openvpn.net/openvpn/wiki/ChangesInOpenvpn23#OpenVPN2.3.13) the default openvpn cipher BF-CBC will cause a renegotiated connection every 64 MB of data
 
+* For OpenVPN 2.4+ AES-256-GCM or AES-128-GCM are recommended. 
+
+        CIPHER=AES-256-GCM
+
 * Generate server configuration with `-2` and `-C $CIPHER` options
 
-        docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://vpn.example.com -2 -C $CIPHER
+        docker run -v $OVPN_DATA:/etc/openvpn --rm hferreira/rpi-docker-openvpn:latest ovpn_genconfig -u udp://vpn.example.com -2 -C $CIPHER
 
 * Generate your client certificate (possibly without a password since you're using OTP)
 
-        docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full <user> nopass
+        docker run -v $OVPN_DATA:/etc/openvpn --rm -it hferreira/rpi-docker-openvpn:latest easyrsa build-client-full <user> nopass
 
 * Generate authentication configuration for your client. -t is needed to show QR code, -i is optional for interactive usage
 
-        docker run -v $OVPN_DATA:/etc/openvpn --rm -t kylemanna/openvpn ovpn_otp_user <user>
+        docker run -v $OVPN_DATA:/etc/openvpn --rm -t hferreira/rpi-docker-openvpn:latest ovpn_otp_user <user>
 
 The last step will generate OTP configuration for the provided user with the following options
 
@@ -64,7 +68,7 @@ If something is not working you can verify your PAM setup with these commands
 
 ```
 # Start a shell in container
-docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn bash
+docker run -v $OVPN_DATA:/etc/openvpn --rm -it hferreira/rpi-docker-openvpn:latest bash
 # Then in container you have pamtester utility already installed
 which pamtester
 # To check authentication use this command that will prompt for a valid code from Authenticator APP
