@@ -1,4 +1,0 @@
-sut:
-  build:
-    context: . 
-    dockerfile: Dockerfile.test
