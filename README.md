@@ -39,7 +39,7 @@ OpenVPN server in a Docker container on RPI complete with an EasyRSA PKI CA.
 
       docker run -v $OVPN_DATA:/etc/openvpn --rm hferreira/rpi-docker-openvpn ovpn_genconfig -n <dns.server.ip1>
 
-(if multiple ones are required just run again)
+* if multiple ones are required just run again
 
       docker run -v $OVPN_DATA:/etc/openvpn --rm hferreira/rpi-docker-openvpn ovpn_genconfig -n <dns.server.ip2>
       
