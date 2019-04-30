@@ -1,7 +1,7 @@
 # Original credit: https://github.com/jpetazzo/dockvpn
 
-# Smallest base image
-FROM alpine:latest
+# Smallest base image for RPI
+FROM arm32v6/alpine:latest
 
 LABEL maintainer="Kyle Manna <kyle@kylemanna.com>"
 
