@@ -20,6 +20,7 @@ OpenVPN server in a Docker container on RPI complete with an EasyRSA PKI CA.
       docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it hferreira/rpi-docker-openvpn:latest ovpn_initpki
 
 * Start OpenVPN server process
+
       docker run -v $OVPN_DATA:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN hferreira/rpi-docker-openvpn:latest
 
 * Generate a client certificate without a passphrase
