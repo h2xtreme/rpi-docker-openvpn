@@ -4,7 +4,7 @@
 FROM arm32v6/alpine:latest
 COPY qemu-arm-static /usr/bin
 
-LABEL maintainer="Kyle Manna <kyle@kylemanna.com>"
+LABEL maintainer="Hugo Ferreira"
 
 # Testing: pamtester
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
