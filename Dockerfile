@@ -2,7 +2,6 @@
 
 # Smallest base image for RPI
 FROM arm32v6/alpine:latest
-COPY qemu-arm-static /usr/bin
 
 LABEL maintainer="Hugo Ferreira"
 
