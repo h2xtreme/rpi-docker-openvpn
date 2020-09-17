@@ -1,4 +1,4 @@
-name: unbound_ci
+name: openvpn_ci
 
 on:
   push:
