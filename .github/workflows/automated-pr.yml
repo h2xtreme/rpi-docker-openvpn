@@ -5,6 +5,7 @@ on:
     - cron: '0 1 * * *'
   repository_dispatch:
     types: "manual run"
+  workflow_dispatch:
 
 jobs:
   automated-pr:
