@@ -13,7 +13,7 @@ In order to enable two factor authentication the following steps are required.
 
 * Choose a more secure [cipher](https://community.openvpn.net/openvpn/wiki/SWEET32) to use because since [OpenVPN 2.3.13](https://community.openvpn.net/openvpn/wiki/ChangesInOpenvpn23#OpenVPN2.3.13) the default openvpn cipher BF-CBC will cause a renegotiated connection every 64 MB of data
 
-* For OpenVPN 2.4+ AES-256-GCM or AES-128-GCM are recommended. 
+* For OpenVPN 2.4+ AES-256-GCM or AES-128-GCM are recommended.
 
         CIPHER=AES-256-GCM
 

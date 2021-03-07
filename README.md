@@ -42,7 +42,7 @@ OpenVPN server in a Docker container on RPI complete with an EasyRSA PKI CA.
 * if multiple ones are required just run again
 
       docker run -v $OVPN_DATA:/etc/openvpn --rm hferreira/rpi-docker-openvpn ovpn_genconfig -n <dns.server.ip2>
-      
+
 ### Setup OTP authentication with Google Authenticator
 
 It's possible (and recommended) to use Google Authenticator App to authenticate thus avoid the need
@@ -71,7 +71,7 @@ Miscellaneous write-ups for advanced configurations are available in the
 
 * Create an environment variable with the name DEBUG and value of 1 to enable debug output (using "docker -e").
 
-        docker run -v $OVPN_DATA:/etc/openvpn -p 1194:1194/udp --privileged -e DEBUG=1 hferreira/rpi-docker-openvpn:latest
+        docker run -v $OVPN_DATA:/etc/openvpn -p 1194:1194/udp --cap-add=NET_ADMIN -e DEBUG=1 hferreira/rpi-docker-openvpn:latest
 
 * Test using a client that has openvpn installed correctly
 
